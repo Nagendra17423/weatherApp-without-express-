@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <!-- <link rel="stylesheet" href="proj.css"> -->
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://www.google.com/fonts#QuickUsePlace:quickUse/Family:Droid+Sans">
+     <!-- <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700'>
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/weather-icons/1.2/css/weather-icons.min.css'> -->
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+  </head>
+  <style>
+@import url(https://fonts.googleapis.com/css?family=Poiret+One);
+@import url(https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css);
+/* 
+$border-radius: 20px; */
+
+body {
+  background-color: #A64253;
+  font-family: Poiret One;
+}
+
+.widget {
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  height: 300px;
+  width: 600px;
+  transform: translate(-50%, -50%);
+  flex-wrap: wrap;
+  cursor: pointer;
+  border-radius: 20px;
+  box-shadow: 0 27px 55px 0 rgba(0, 0, 0, 0.3), 0 17px 17px 0 rgba(0, 0, 0, 0.15);
+}
+  .weatherIcon{
+    flex: 1 100%;
+    height: 60%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background: #FAFAFA;
+    font-family: weathericons;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 100px;
+  }
+    i{
+      padding-top: 30px;
+    }
+  
+  
+  .weatherInfo{
+    flex: 0 0 70%;
+    height: 40%;
+    background: #080705;
+    border-bottom-left-radius: 20px;
+    display: flex;
+    align-items: center;
+    color: white;
+  }
+    
+    .temperature{
+      flex: 0 0 40%;
+      width: 100%;
+      font-size: 65px;
+      display: flex;
+      justify-content: space-around;
+    }
+    
+    .description{
+      flex: 0 60%;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+    }
+      .weatherCondition{
+        text-transform: uppercase;
+        font-size: 35px;
+        font-weight: 100;
+      }
+      
+      .place{
+        font-size: 15px;
+      }
+    
+  
+  
+  .date{
+    flex: 0 0 30%;
+    height: 40%;
+    background: #70C1B3;
+    border-bottom-right-radius: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+    font-size: 30px;
+    font-weight: 800;
+  }
+
+
+p{
+  position: fixed;
+  bottom: 0%;
+  right: 2%;
+}
+  a{
+    text-decoration: none;
+    color: #E4D6A7;
+    font-size: 10px;
+  }
+
+  </style>
+<body>
+    <!-- <center> -->
+      <article class="widget" id="main">
+        <div class="weatherIcon" id="first">
+          
+         <!--cloud-->
+          <!-- <i class="wi wi-day-cloudy" id="cloud"></i> -->
+         <!--lighting rainy-->
+          <span class="iconify"  id="cloud" data-icon="wi:day-lightning" data-inline="false" style="color:rgb(10, 10, 10);display:none;"></span>
+          <!--cloudy -->
+          <span class="iconify"  id="show"  data-icon="wi:cloudy-gusts" data-inline="false" style="color:rgb(12, 12, 12);"></span>
+          <!--sunny-->
+          <span class="iconify" id="sun" data-icon="wi:hot" data-inline="false" style="color:rgb(241, 167, 28); display:none;"></span>
+         <!--snow-->
+          <span class="iconify"  id="winter" data-icon="wi:day-sleet" data-inline="false" style="color:rgb(11, 12, 12); display:none;"></span>
+          <!--clear-->
+          <span class="iconify"   id="clear" data-icon="wi:day-sunny" data-inline="false" style="color:teal;display:none;"></span>
+          <!-- <i class="far fa-sun" style="color:yellow; display:none"></i>
+          <i class="fas fa-cloud-rain" style="color:Light rgb(82, 223, 216); display:none"></i> -->
+          <!-- <div class="place">
+             
+          </div> -->
+          <div class="weatherCondition">{%climate%}</div> 
+        </div>
+        <div class="weatherInfo" id="second">
+          <div class="temperature" id="third"><span>{%temp%}&deg;</span></div>
+          <div class="description">    
+
+            <div class="place">
+              <h2 id="loc">{%loc%},{%country%}</h2>
+              <h2 id="minmax">Max:{%temp_max%} Min:{%temp_min%}</h2>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="date" id="customdate">&nbsp;1st Jan | &nbsp;Wed</div>
+      </article>
+      <!-- <p><a href="https://codepen.io/nerios/full/jWjmby/">Inspired by: https://codepen.io/nerios/full/jWjmby/. Implemented using FlexBox.</a>
+      </p> -->
+
+    <script>
+      const status="{%climateStatus%}";
+      const show=document.getElementById("show");
+     
+      console.log(" show="+status);
+      if(status=='Sun')
+      {
+        show.style.display="none";
+        document.getElementById("sun").style.display="block";
+        //show.innerHTML='<span class="iconify" id="sun" data-icon="wi:hot" data-inline="false" style="color:rgb(241, 167, 28); display:block;"></span>';
+      
+        }  else if(status=="Rain")
+      {
+        show.style.display="none";
+        document.getElementById("cloud").style.display="block";
+       // show.innerHTML=' <span class="iconify"  id="cloud" data-icon="wi:day-lightning" data-inline="false" style="color:black;display:block;"></span>';
+
+              }        else if(status=="Smoke")
+              {
+                show.style.display="none";
+                document.getElementById("winter").style.display="block";
+//show.innerHTML='<span class="iconify"  id="winter" data-icon="wi:day-sleet" data-inline="false" style="color:black; display:block;"></span>';
+              }
+              else if(status=="Clear"){
+                show.style.display="none";
+                document.getElementById("clear").style.display="block";
+//show.innerHTML='<span class="iconify"   id="clear" data-icon="wi:day-sunny" data-inline="false" style="color:black; display:block;"></span>';
+//else if(status=="Smoke")
+//show.innerHTML='<span class="iconify" id="cloudy" data-icon="wi:day-cloudy" data-inline="false" style="color:black; display:block;"></span>';
+
+              }
+              else 
+              {
+                show.style.display="none";
+                document.getElementById("clear").style.display="block";
+//show.innerHTML='<span class="iconify"   id="clear" data-icon="wi:day-sunny" data-inline="false" style="color:black; display:block;"></span>';
+
+              }
+//const check=document.getElementById("main");
+/*console.log(check);
+const s=document.getElementById("first");
+console.log(s);
+const e=document.getElementById("second");
+console.log(e);
+console.log(" temp="+document.getElementById("third").textContent);
+console.log(" temp="+document.getElementById("third").innerText);*/
+const callDate=()=>{
+  var d = new Date();
+var weekday = new Array(7);
+weekday[0] = "Sun";
+weekday[1] = "Mon";
+weekday[2] = "Tue";
+weekday[3] = "Wedn";
+weekday[4] = "Thur";
+weekday[5] = "Fri";
+weekday[6] = "Sat";
+
+var n = weekday[d.getDay()];
+//console.log("day is "+n);
+return n;
+}
+const getMonth=()=>{
+  var d = new Date();
+var month = new Array();
+month[0] = "Jan";
+month[1] = "Feb";
+month[2] = "Mar";
+month[3] = "Apr";
+month[4] = "May";
+month[5] = "Jun";
+month[6] = "Jul";
+month[7] = "Aug";
+month[8] = "Sept";
+month[9] = "Oct";
+month[10] = "Nov";
+month[11] = "Dec";
+var n = month[d.getMonth()];
+return n;
+
+}
+const dt=new Date();
+
+//console.log("  year section is "+dt.getDate()+" "+getMonth()+" | "+callDate());
+   
+document.getElementById("customdate").innerHTML=`${dt.getDate()} ${getMonth()} | ${callDate()}`;
+</script>
+
+    </body>
+    </html>
